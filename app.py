@@ -4,6 +4,7 @@ from flask_restful import Api, Resource
 from openai import OpenAI
 import pickle
 import pandas as pd
+from main import get_chat
 
 app = Flask(__name__)
 api = Api(app)
@@ -12,6 +13,8 @@ api = Api(app)
 model_filename = 'xgboost_model.pkl'
 with open(model_filename, 'rb') as model_file:
     xg_model = pickle.load(model_file)
+
+
 
 class Prediction1(Resource):
     def post(self):
@@ -123,11 +126,20 @@ class Prediction2(Resource):
 
         # Return the prediction as part of the response
         return jsonify({'score': xg_pred.tolist()[0]})
-            
-            
+
+recom_parser = reqparse.RequestParser()
+recom_parser.add_argument('question', type=str, help='Question cannot be blank', required=True)
+recom_parser.add_argument('risk_score', type=float, help='Risk Score cannot be blank', required=True)
+class GetRecommendation(Resource):
+    def post(self):
+        args = recom_parser.parse_args()
+        output = get_chat(args['question'], args['risk_score'])
+        return {"message": output[0], "first": output[1], "second": output[2], "third": output[3]}
+
             
 api.add_resource(Prediction1, '/TIAA/prediction1')
 api.add_resource(Prediction2, '/TIAA/prediction2')
+api.add_resource(GetRecommendation, '/TIAA/chat')
 
 if __name__ == '__main__':
     app.run(debug=True)

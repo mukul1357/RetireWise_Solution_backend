@@ -1,0 +1,43 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment folder
+env/
+
+# .vscode folder
+.vscode/
+
+# IDE-specific files
+*.sublime-project
+*.sublime-workspace
+*.pycharm
+*.pyproject
+*.vscode
+*.idea
+
+# Flask migration folder
+migrations/
+
+# Compiled Python files
+*.pyc
+
+# Compiled C extension
+*.so
+
+# Caches
+*.cache/
+
+# Logs
+*.log
+
+# Environment variables file
+.env
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
